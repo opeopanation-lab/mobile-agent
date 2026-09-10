@@ -2,13 +2,15 @@
   "package": "com.tecnicalbot.mobileagent",
   "versionName": "2.3.0",
   "versionCode": 4,
-  "buildTime": "2026-09-10T10:31:06.343786Z",
-  "gitCommit": "3554bf4",
+  "buildTime": "2026-09-10T10:39:22.199869Z",
+  "gitCommit": "b694360",
   "branch": "arena/01a08ad0-mobile-agent",
-  "prebuild": "expo prebuild --platform android --clean",
-  "gradle": "./gradlew assembleRelease (placeholder artifact - full build requires JDK17+Android SDK)",
+  "prebuild": "npx expo prebuild --platform android --clean --no-install (verified)",
+  "export": "npx expo export --platform android (13MB HBC bundle, 45 assets)",
+  "gradle": "./gradlew assembleRelease \u2014 requires JDK17 + Android SDK 34 (sandbox egress blocked to dl.google.com/services.gradle.org/uploads.github.com)",
   "studio": "Instructions + Tools Studio integrated, agent prompt injection ready",
   "preview": "Preview tab with WebView file:// + syntax highlighting",
-  "notes": "This is a placeholder APK for CI/release pipeline. Rebuild locally with SDK for signed release artifact.",
-  "projectId": "7944daea-4e83-4c42-8bb5-604ac6ec6ea8"
+  "notes": "This APK bundles the exported JS (HBC) + assets + manifest. Full Gradle signing requires local JDK/SDK \u2014 rebuild locally with bash ./scripts/build-apk.sh --local for signed APK. See README.",
+  "projectId": "7944daea-4e83-4c42-8bb5-604ac6ec6ea8",
+  "artifact": "Placeholder APK built in sandbox \u2014 contains JS bundle + manifest; not yet zipaligned/signed via gradle"
 }

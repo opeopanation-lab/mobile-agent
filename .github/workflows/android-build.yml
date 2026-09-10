@@ -1,7 +1,16 @@
 name: Android APK Build
 
 on:
+  push:
+    branches:
+      - arena/01a08af6-mobile-agent
+    paths:
+      - ".github/workflows/android-build.yml"
   workflow_dispatch:
+
+concurrency:
+  group: android-apk-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build-apk:

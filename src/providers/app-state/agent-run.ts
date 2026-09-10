@@ -1529,6 +1529,30 @@ export async function executeClaimedAgentRun(
             ),
           ].join("\n\n")
         : undefined;
+    const customInstructionsSystem = (() => {
+      const all = snapshotRef.current.settings.customInstructions ?? [];
+      const enabled = all.filter((i) => i.enabled);
+      if (enabled.length === 0) return undefined;
+      const order = { high: 0, normal: 1, low: 2 } as const;
+      enabled.sort((a, b) => order[a.priority] - order[b.priority]);
+      return (
+        "User Instructions — follow strictly (highest priority, sorted high → low):\n" +
+        enabled
+          .map((ins) => `### ${ins.title} [${ins.priority}]\n${ins.content}`)
+          .join("\n\n")
+      );
+    })();
+    const customToolsSystem = (() => {
+      const all = snapshotRef.current.settings.customTools ?? [];
+      const enabled = all.filter((t) => t.enabled);
+      if (enabled.length === 0) return undefined;
+      return (
+        "Studio Tools — enabled custom tools you may use. Each tool describes how to run it (often a terminal command). Use them when relevant and tell the user which tool you invoked:\n" +
+        enabled
+          .map((t) => `- **${t.name}** [${t.category}] — ${t.description}\n  Instructions: ${t.instructions}`)
+          .join("\n")
+      );
+    })();
     const runtimeSystem =
       [
         agent.prompt?.trim() || BASE_AGENT_SYSTEM_PROMPT,
@@ -1541,6 +1565,8 @@ export async function executeClaimedAgentRun(
         mcpRuntime?.systemPrompt,
         memoryRuntimeSystem,
         skillsRuntimeSystem,
+        customInstructionsSystem,
+        customToolsSystem,
         skillManagementRuntimeSystem,
         agentManagementRuntimeSystem,
         taskRuntimeSystem,

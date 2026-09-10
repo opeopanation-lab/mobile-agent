@@ -65,7 +65,7 @@ case "$MODE" in
     ./gradlew assembleRelease --warning-mode all
 
     APK_SRC="app/build/outputs/apk/release/app-release.apk"
-    DEST="$ROOT_DIR/build/mobile-agent-v$(node -p "require('../package.json').version" 2>/dev/null || echo "2.2.0").apk"
+    DEST="$ROOT_DIR/build/mobile-agent-v$(node -p "require('$ROOT_DIR/package.json').version" 2>/dev/null || node -p "require('../package.json').version" 2>/dev/null || echo "2.3.0").apk"
     # Fallback if node path wrong when cd android
     if [ ! -f "$APK_SRC" ]; then
       echo "⚠ Expected APK not at $APK_SRC — searching…"

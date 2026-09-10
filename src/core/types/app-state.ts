@@ -469,6 +469,27 @@ export type SendMessageInput = {
   selectedFileIds?: string[];
 };
 
+export type CustomInstruction = {
+  id: string;
+  title: string;
+  content: string;
+  enabled: boolean;
+  priority: "high" | "normal" | "low";
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type CustomToolDefinition = {
+  id: string;
+  name: string;
+  description: string;
+  instructions: string;
+  category: "apk" | "build" | "workspace" | "general" | "custom";
+  enabled: boolean;
+  createdAt: string;
+  updatedAt: string;
+};
+
 export type AppSettings = {
   activeConversationId: string | null;
   activeModelRef: ModelRef | null;
@@ -480,6 +501,8 @@ export type AppSettings = {
   themeMode: ThemeMode;
   toolApprovalMode: ToolApprovalMode;
   notificationSettings: NotificationSettings;
+  customInstructions: CustomInstruction[];
+  customTools: CustomToolDefinition[];
 };
 
 export type CuratedModelDefinition = {

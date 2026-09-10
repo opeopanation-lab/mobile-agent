@@ -1,6 +1,7 @@
 import { useRouter } from "expo-router";
+import { useSQLiteContext } from "expo-sqlite";
 import { Check, ChevronLeft, ChevronRight } from "lucide-react-native";
-import { useEffect, useMemo, useState, type ReactNode } from "react";
+import { useCallback, useEffect, useMemo, useState, type ReactNode } from "react";
 import { Platform, Pressable, Text, View } from "react-native";
 
 import { Container } from "@/components/shared/container";
@@ -21,6 +22,7 @@ import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import type { DatabaseMode, ModelRef } from "@/core/types/app-state";
 import { cn } from "@/core/utils";
+import { createRepositories } from "@/core/db/database";
 import { useAppState } from "@/hooks/use-app-state";
 import { useConfig } from "@/hooks/use-config";
 import { useTheme } from "@/hooks/use-theme";
@@ -44,6 +46,7 @@ type DrawerKey =
 export default function SettingsScreen() {
   const router = useRouter();
   const theme = useTheme();
+  const db = useSQLiteContext();
   const { error, hydrating, ready } = useAppState();
   const {
     activeModels,
@@ -76,6 +79,29 @@ export default function SettingsScreen() {
   const [batteryOptimizationGranted, setBatteryOptimizationGranted] = useState<
     boolean | null
   >(null);
+  const [studioCounts, setStudioCounts] = useState({
+    instructions: 0,
+    instructionsEnabled: 0,
+    tools: 0,
+    toolsEnabled: 0,
+  });
+
+  const refreshStudioCounts = useCallback(async () => {
+    try {
+      const repos = createRepositories(db);
+      const s = await repos.configRepository.getSettings();
+      setStudioCounts({
+        instructions: s.customInstructions?.length ?? 0,
+        instructionsEnabled: (s.customInstructions ?? []).filter((i) => i.enabled).length,
+        tools: s.customTools?.length ?? 0,
+        toolsEnabled: (s.customTools ?? []).filter((t) => t.enabled).length,
+      });
+    } catch {}
+  }, [db]);
+
+  useEffect(() => {
+    refreshStudioCounts();
+  }, [refreshStudioCounts]);
 
   useEffect(() => {
     setDatabaseUrlInput(databaseUrl ?? "");
@@ -154,6 +180,30 @@ export default function SettingsScreen() {
             router.push("/settings/tools");
           }}
           value={`${enabledToolCount} active`}
+        />
+        <Separator />
+        <SettingsLinkRow
+          label="Instructions"
+          onPress={() => {
+            router.push("/settings/instructions" as never);
+          }}
+          value={
+            studioCounts.instructions === 0
+              ? "Add prompts"
+              : `${studioCounts.instructionsEnabled}/${studioCounts.instructions} active`
+          }
+        />
+        <Separator />
+        <SettingsLinkRow
+          label="Tools Studio"
+          onPress={() => {
+            router.push("/settings/tools-studio" as never);
+          }}
+          value={
+            studioCounts.tools === 0
+              ? "APK + custom"
+              : `${studioCounts.toolsEnabled}/${studioCounts.tools} tools · APK`
+          }
         />
         <Separator />
         <SettingsLinkRow

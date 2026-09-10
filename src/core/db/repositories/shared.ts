@@ -45,6 +45,32 @@ export function buildSettings(rows: AppSettingRow[]): AppSettings {
     }
   })();
 
+  const customInstructions = (() => {
+    const raw = settingsMap.get("custom_instructions_json");
+    if (!raw) return [] as AppSettings["customInstructions"];
+    try {
+      const parsed = JSON.parse(raw) as unknown;
+      return Array.isArray(parsed)
+        ? (parsed as AppSettings["customInstructions"])
+        : ([] as AppSettings["customInstructions"]);
+    } catch {
+      return [] as AppSettings["customInstructions"];
+    }
+  })();
+
+  const customTools = (() => {
+    const raw = settingsMap.get("custom_tools_json");
+    if (!raw) return [] as AppSettings["customTools"];
+    try {
+      const parsed = JSON.parse(raw) as unknown;
+      return Array.isArray(parsed)
+        ? (parsed as AppSettings["customTools"])
+        : ([] as AppSettings["customTools"]);
+    } catch {
+      return [] as AppSettings["customTools"];
+    }
+  })();
+
   return {
     activeConversationId: settingsMap.get("active_conversation_id") ?? null,
     activeModelRef:
@@ -82,5 +108,7 @@ export function buildSettings(rows: AppSettingRow[]): AppSettings {
       approvalRequests: true,
       runFinished: true,
     },
+    customInstructions,
+    customTools,
   };
 }

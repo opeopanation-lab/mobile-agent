@@ -34,12 +34,14 @@ import {
   Edit,
   EllipsisVertical,
   Eye,
+  Hammer,
   Library,
   Pause,
   Pencil,
   Pin,
   PinOff,
   Settings2,
+  Sparkles,
   Trash2,
   Users,
 } from "lucide-react-native";
@@ -252,6 +254,70 @@ export function AppSidebar() {
                       )}
                     >
                       Library
+                    </Text>
+                  </SidebarMenuButton>
+                </SidebarClose>
+              </SidebarMenuItem>
+              <SidebarMenuItem>
+                <SidebarClose asChild>
+                  <SidebarMenuButton
+                    className="!min-h-10 !px-0 !py-sp-1"
+                    isActive={pathname === "/settings/instructions" || pathname.startsWith("/settings/instructions")}
+                    leftIcon={
+                      <Sparkles
+                        color={
+                          pathname === "/settings/instructions" || pathname.startsWith("/settings/instructions")
+                            ? theme.background
+                            : theme.text
+                        }
+                        size={20}
+                      />
+                    }
+                    onPress={() => {
+                      router.push("/settings/instructions" as never);
+                    }}
+                  >
+                    <Text
+                      className={cn(
+                        "font-sans text-lg font-medium",
+                        pathname === "/settings/instructions" || pathname.startsWith("/settings/instructions")
+                          ? "text-background dark:text-background-dark"
+                          : "text-foreground dark:text-foreground-dark",
+                      )}
+                    >
+                      Instructions
+                    </Text>
+                  </SidebarMenuButton>
+                </SidebarClose>
+              </SidebarMenuItem>
+              <SidebarMenuItem>
+                <SidebarClose asChild>
+                  <SidebarMenuButton
+                    className="!min-h-10 !px-0 !py-sp-1"
+                    isActive={pathname === "/settings/tools-studio" || pathname.startsWith("/settings/tools-studio")}
+                    leftIcon={
+                      <Hammer
+                        color={
+                          pathname === "/settings/tools-studio" || pathname.startsWith("/settings/tools-studio")
+                            ? theme.background
+                            : theme.text
+                        }
+                        size={20}
+                      />
+                    }
+                    onPress={() => {
+                      router.push("/settings/tools-studio" as never);
+                    }}
+                  >
+                    <Text
+                      className={cn(
+                        "font-sans text-lg font-medium",
+                        pathname === "/settings/tools-studio" || pathname.startsWith("/settings/tools-studio")
+                          ? "text-background dark:text-background-dark"
+                          : "text-foreground dark:text-foreground-dark",
+                      )}
+                    >
+                      Tools Studio
                     </Text>
                   </SidebarMenuButton>
                 </SidebarClose>

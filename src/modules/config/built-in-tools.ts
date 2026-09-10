@@ -97,6 +97,57 @@ export const BUILT_IN_FILE_TOOL_CONTROLS: Array<{
   },
 ];
 
+export const APK_BUILD_TOOL_CONTROLS: Array<{
+  id: string;
+  label: string;
+  description: string;
+  command: string;
+  category: "prebuild" | "gradle" | "eas" | "bundle" | "publish";
+}> = [
+  {
+    id: "expo-prebuild",
+    label: "Expo Prebuild (native folders)",
+    description: "Regenerate android/ & ios/ via expo prebuild --clean",
+    command: "npx expo prebuild --clean --platform android",
+    category: "prebuild",
+  },
+  {
+    id: "gradle-assemble",
+    label: "Gradle Assemble Release",
+    description: "Build release APK via ./gradlew assembleRelease",
+    command: "./android/gradlew :app:assembleRelease",
+    category: "gradle",
+  },
+  {
+    id: "eas-local",
+    label: "EAS Local APK",
+    description: "eas build --platform android --profile production --local",
+    command: "eas build --platform android --profile production --local",
+    category: "eas",
+  },
+  {
+    id: "eas-cloud",
+    label: "EAS Cloud APK",
+    description: "Trigger cloud build and auto-download artifact",
+    command: "eas build --platform android --profile production --auto-submit",
+    category: "eas",
+  },
+  {
+    id: "bundle-sign",
+    label: "Bundle & Sign",
+    description: "Create JS bundle and sign APK for release",
+    command: "npx expo export && ./gradlew bundleRelease",
+    category: "bundle",
+  },
+  {
+    id: "clean-build",
+    label: "Clean Build Artifacts",
+    description: "Remove previous builds and caches",
+    command: "rm -rf build/ android/build && npx expo prebuild --clean",
+    category: "bundle",
+  },
+];
+
 export const ALWAYS_ENABLED_BUILT_IN_TOOLS: BuiltInToolKey[] = [
   "todos",
   "question",

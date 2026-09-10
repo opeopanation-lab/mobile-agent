@@ -32,6 +32,20 @@ A dedicated **Preview** bottom-tab (also in the sidebar) shows every file the ag
 
 Open it from the bottom navigation (`Chat · Preview · Files`) or the sidebar → **Preview**.
 
+## Instructions & Tools Studio
+
+Two new hubs live in **Settings** (also in the sidebar drawer):
+
+- **Instructions** (`/settings/instructions`) — user-written system prompts injected into every agent run. Create high/normal/low priority instructions, enable/disable per turn, and seed from templates: *APK Build Pipeline — Strict*, *Preview-Driven Development*, *Clean Build Policy*, *Tool & Skill Expansion Agent*. Enabled instructions are sorted `high → normal → low` and appended to `runtimeSystem` in `src/providers/app-state/agent-run.ts`.
+
+- **Tools Studio** (`/settings/tools-studio`) — unified control plane for built-in workspace tools, the APK build pipeline, custom tools, and skill templates:
+  - *Core Workspace Tools* toggles (`workspace*`, `folder*` via `ToolToggleList`)
+  - *APK Build Tools* one-tap controllers (Expo Prebuild, Gradle Assemble, EAS Local/Cloud, Bundle & Sign, Clean) backed by `APK_BUILD_TOOL_CONTROLS` in `src/modules/config/built-in-tools.ts`
+  - *Custom Tools* CRUD stored as `custom_tools_json` in `appSettings` (`customInstructions`/`customTools` parsed in `src/core/db/repositories/shared.ts`, default `[]` in `src/providers/app-state/constants.ts`)
+  - *APK Skills* import (apk-builder, apk-release, preview-publisher, tool-factory) via `importSkillMarkdown` → they auto-match keywords at runtime
+
+Both studios persist via `appSettings` (`custom_instructions_json`, `custom_tools_json` through `configRepository.setSetting`) and hydrate through `hydrate()` so the agent sees them immediately. Use the sidebar → **Instructions** / **Tools Studio** for one-tap access.
+
 ## Building the APK
 
 The app is an Expo 57 project with EAS Build configured for APKs.
@@ -48,10 +62,10 @@ pnpm run build:apk:cloud   # EAS cloud
 npx expo prebuild --platform android --clean
 cd android && ./gradlew assembleRelease
 # → android/app/build/outputs/apk/release/app-release.apk
-#   copied to ./build/mobile-agent-v2.2.0.apk
+#   copied to ./build/mobile-agent-v2.3.0.apk
 ```
 
-Version bump: `app.json` / `package.json` → `2.2.0` (`versionCode` 3) for the Preview release.
+Version bump: `app.json` / `package.json` → `2.3.0` (`versionCode` 4) for the Instructions & Tools Studio release (Preview was 2.2.0 / 3).
 
 ## Installation
 

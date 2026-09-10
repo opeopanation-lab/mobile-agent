@@ -62,6 +62,8 @@ export const EMPTY_SETTINGS: AppSettings = {
         approvalRequests: true,
         runFinished: true,
     },
+    customInstructions: [],
+    customTools: [],
 };
 
 export const EMPTY_RESOLVED_CONFIG: ResolvedConfig = {

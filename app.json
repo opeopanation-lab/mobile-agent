@@ -2,7 +2,7 @@
   "expo": {
     "name": "Mobile Agent",
     "slug": "mobile-agent",
-    "version": "2.2.0",
+    "version": "2.3.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "mobile-agent",
@@ -20,7 +20,7 @@
       }
     },
     "android": {
-      "versionCode": 3,
+      "versionCode": 4,
       "permissions": [
         "android.permission.REQUEST_INSTALL_PACKAGES",
         "android.permission.WAKE_LOCK",

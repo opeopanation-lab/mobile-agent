@@ -39,6 +39,9 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Fetch expo-libghostty vendor libraries
+        run: node node_modules/expo-libghostty/scripts/download-android-libs.mjs
+
       - name: Generate native Android project
         run: npx expo prebuild --platform android --no-install
 

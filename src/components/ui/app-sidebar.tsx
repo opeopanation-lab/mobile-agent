@@ -33,6 +33,7 @@ import { usePathname, useRouter } from "expo-router";
 import {
   Edit,
   EllipsisVertical,
+  Eye,
   Library,
   Pause,
   Pencil,
@@ -191,6 +192,38 @@ export function AppSidebar() {
         <SidebarContent>
           <SidebarGroup>
             <SidebarMenu className="gap-1">
+              <SidebarMenuItem>
+                <SidebarClose asChild>
+                  <SidebarMenuButton
+                    className="!min-h-10 !px-0 !py-sp-1"
+                    isActive={pathname === "/preview"}
+                    leftIcon={
+                      <Eye
+                        color={
+                          pathname === "/preview"
+                            ? theme.background
+                            : theme.text
+                        }
+                        size={20}
+                      />
+                    }
+                    onPress={() => {
+                      router.push("/preview" as never);
+                    }}
+                  >
+                    <Text
+                      className={cn(
+                        "font-sans text-lg font-medium",
+                        pathname === "/preview"
+                          ? "text-background dark:text-background-dark"
+                          : "text-foreground dark:text-foreground-dark",
+                      )}
+                    >
+                      Preview
+                    </Text>
+                  </SidebarMenuButton>
+                </SidebarClose>
+              </SidebarMenuItem>
               <SidebarMenuItem>
                 <SidebarClose asChild>
                   <SidebarMenuButton
